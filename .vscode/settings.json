@@ -1,0 +1,5 @@
+{
+    "[typescript]": { "editor.autoClosingBrackets": "languageDefined" },
+    "editor.formatOnSave": true,
+    "editor.autoClosingBrackets": "always",
+}
