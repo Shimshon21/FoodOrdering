@@ -15,7 +15,7 @@ const ProductDetailsScreen = () => {
 	const product = products.find((p) => p.id.toString() == id);
 
 	const addToCart = () => {
-		console.warn("Adding to cart");
+		console.warn(`Adding to cart ${selectedSize} size`);
 	};
 
 	if (!product) {
