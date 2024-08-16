@@ -1,17 +1,69 @@
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import Button from "@/components/Button";
+import { useState } from "react";
+import { View, Text, StyleSheet, TextInput, Image } from "react-native";
+import defaultPizzaImage from "@components/ProductListItem";
 
 const CreateProductsScreen = () => {
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+
+  const [errors, setErrors] = useState("");
+
+  const resetFields = () => {
+    setName("");
+    setPrice("");
+  };
+
+  const validateInput = () => {
+    if (!name) {
+      setErrors("Name is required");
+      return false;
+    }
+
+    if (!price) {
+      setErrors("Price is required");
+      return false;
+    }
+
+    if (isNaN(parseFloat(price))) {
+      setErrors("Price is not a number");
+      return false;
+    }
+
+    return true;
+  };
+
+  const onCreate = () => {
+    if (!validateInput()) {
+      return;
+    }
+
+    console.warn("Creating product", name, price);
+    resetFields();
+  };
+
   return (
     <View style={styles.container}>
+      <Image style={styles.image} source={{ uri: defaultPizzaImage }}></Image>
       <Text style={styles.label}>Name</Text>
-      <TextInput placeholder="Name" style={styles.input} />
+      <TextInput
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
+        style={styles.input}
+      />
 
       <Text style={styles.label}>Price</Text>
       <TextInput
         placeholder="Price"
+        value={price}
+        onChangeText={setPrice}
         style={styles.input}
         keyboardType="decimal-pad"
       />
+
+      <Text style={{ color: "red" }}>{errors}</Text>
+      <Button text="Create" onPress={onCreate}></Button>
     </View>
   );
 };
@@ -30,7 +82,10 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 20,
   },
-
+  image: {
+    aspectRatio: 1,
+    width: "50%",
+  },
   label: {
     color: "gray",
     fontSize: 16,
