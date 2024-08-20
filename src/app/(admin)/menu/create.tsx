@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import { useState } from "react";
 import { View, Text, StyleSheet, TextInput, Image } from "react-native";
 import defaultPizzaImage from "@components/ProductListItem";
+import Colors from "@/constants/Colors";
 
 const CreateProductsScreen = () => {
   const [name, setName] = useState("");
@@ -44,7 +45,9 @@ const CreateProductsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={{ uri: defaultPizzaImage }}></Image>
+      <Image source={{ uri: defaultPizzaImage }} style = {styles.image} />
+      <Text style = {styles.te}
+
       <Text style={styles.label}>Name</Text>
       <TextInput
         placeholder="Name"
@@ -74,7 +77,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 10,
   },
-
+  textButton: {
+    alignSelf: 'center',
+    fontWeight: 'bold',
+    color: Colors.light.tint,
+    marginVertical: 10,
+  },
   input: {
     backgroundColor: "white",
     padding: 10,
