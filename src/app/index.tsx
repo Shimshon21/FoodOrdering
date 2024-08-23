@@ -21,7 +21,7 @@ const index = () => {
 				backgroundColor: "white",
 			}}
 		>
-			<Redirect href={"/(auth)"} />
+			<Redirect href={"/(auth)/"} />
 		</View>
 	);
 };

@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { useState } from "react";
 import Colors from "@/constants/Colors";
 
@@ -20,8 +20,8 @@ const SignUpScreen = () => {
 			/>
 			<Text style={styles.label}>Password</Text>
 			<TextInput
-				value={email}
-				placeholder="name@gamil.com"
+				value={password}
+				placeholder=""
 				style={styles.input}
 				onChangeText={setPasswword}
 			/>
@@ -31,7 +31,9 @@ const SignUpScreen = () => {
 					console.log("");
 				}}
 			></Button>
-			<Text style={styles.navText}>Sign in dasdasdas</Text>
+			<Link href="/(auth)/sign-in" asChild>
+				<Text style={styles.navText}>Sign in</Text>
+			</Link>
 		</View>
 	);
 };
@@ -43,6 +45,8 @@ const styles = StyleSheet.create({
 		borderRadius: 5,
 		marginTop: 5,
 		marginBottom: 20,
+		borderColor: "grey",
+		borderWidth: 1,
 	},
 	label: {
 		color: "grey",
@@ -55,7 +59,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: "center",
-		marginHorizontal: 10,
+		marginHorizontal: 20,
 	},
 });
 
