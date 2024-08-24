@@ -5,23 +5,13 @@ import { Link, Redirect } from "expo-router";
 
 const index = () => {
 	return (
-		// <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
-		//   <Link href={"/(user)"} asChild>
-		//     <Button text="User" />
-		//   </Link>
-		//   <Link href={"/(admin)"} asChild>
-		//     <Button text="Admin" />
-		//   </Link>
-		// </View>
-		<View
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				padding: 10,
-				backgroundColor: "white",
-			}}
-		>
-			<Redirect href={"/(auth)/"} />
+		<View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
+			<Link href={"/(user)"} asChild>
+				<Button text="User" />
+			</Link>
+			<Link href={"/(admin)"} asChild>
+				<Button text="Admin" />
+			</Link>
 		</View>
 	);
 };
