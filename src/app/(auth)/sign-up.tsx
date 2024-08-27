@@ -24,6 +24,7 @@ const SignUpScreen = () => {
 				placeholder=""
 				style={styles.input}
 				onChangeText={setPasswword}
+				secureTextEntry
 			/>
 			<Button
 				text="Button"

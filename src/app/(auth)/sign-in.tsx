@@ -24,6 +24,7 @@ const SignInScreen = () => {
 				placeholder=""
 				style={styles.input}
 				onChangeText={setPasswword}
+				secureTextEntry
 			/>
 			<Link href="/(admin)/" asChild>
 				<Button text="Button"></Button>
