@@ -8,13 +8,15 @@ import { supabase } from "@/lib/supabase";
 const SignUpScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPasswword] = useState("");
-  const [loader, setLoader] = useState(false);
+  const [loadeing, setLoading] = useState(false);
 
   async function signUpWithEmail() {
     console.warn("Sign Up");
+    setLoading(true);
     const { error } = await supabase.auth.signUp({ email, password });
 
     if (error) Alert.alert(error.message);
+    setLoading(false);
   }
 
   return (
@@ -36,7 +38,8 @@ const SignUpScreen = () => {
         secureTextEntry
       />
       <Button
-        text="Button"
+        text={loadeing ? "Creating Account..." : "Create Account"}
+        disabled={loadeing}
         onPress={() => {
           signUpWithEmail();
         }}
