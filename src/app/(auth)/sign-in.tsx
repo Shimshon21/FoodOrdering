@@ -26,7 +26,7 @@ const SignInScreen = () => {
 				onChangeText={setPasswword}
 				secureTextEntry
 			/>
-			<Link href="/(admin)/" asChild>
+			<Link href="/(admin)" asChild>
 				<Button text="Button"></Button>
 			</Link>
 			<Link href="/(auth)/sign-up" asChild>

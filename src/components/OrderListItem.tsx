@@ -1,8 +1,11 @@
 import { Order } from "@/types";
-import dayjs from "dayjs";
+import relativetime from "dayjs/plugin/relativeTime";
+import dayjs, { Dayjs } from "dayjs";
 import { Link, useSegments } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Button from "./Button";
+
+dayjs.extend(relativetime);
 
 type OrderListItemProps = {
 	order: Order;
@@ -12,10 +15,6 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
 	// Current date and time
 	const currentDate = dayjs();
 
-	const diffDate = dayjs(currentDate)
-		.diff(order.created_at, "hour")
-		.toLocaleString();
-
 	const segments = useSegments();
 
 	return (
@@ -23,7 +22,10 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
 			<Pressable style={styles.container}>
 				<View>
 					<Text>Order #{order.id}</Text>
-					<Text style={styles.time}>{diffDate} hours ago</Text>
+					<Text style={styles.time}>
+						{" "}
+						{dayjs(order.created_at).fromNow()} hours ago
+					</Text>
 				</View>
 
 				<View style={styles.status}>
