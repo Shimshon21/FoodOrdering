@@ -8,10 +8,10 @@ import { supabase } from "@/lib/supabase";
 const SignInScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPasswword] = useState("");
-  const [loadeing, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function signInWithEmail() {
-    console.warn("Sign Up");
+    console.warn("Sign in");
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -40,9 +40,11 @@ const SignInScreen = () => {
         onChangeText={setPasswword}
         secureTextEntry
       />
-      <Link href="/(admin)" asChild>
-        <Button onPress={signInWithEmail} text="Button"></Button>
-      </Link>
+      <Button
+        onPress={signInWithEmail}
+        disabled={loading}
+        text={loading ? "Sign In..." : "Sign In"}
+      ></Button>
       <Link href="/(auth)/sign-up" asChild>
         <Text style={styles.navText}>Create an account</Text>
       </Link>
