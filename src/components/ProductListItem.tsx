@@ -16,13 +16,13 @@ const ProductListItem = ({ product }: ProductListItemProps) => {
   return (
     // We can also write the route as (tabs)/menu/${product.id}
     // but round brackets() are optional path
-    <Link href={`${segments[0]}/menu/${product.id}`} asChild={true}>
+    <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
       <Pressable style={styles.container}>
         <Image
           style={styles.image}
           source={{ uri: product.image || defaultPizzaImage }}
           resizeMode="contain"
-        ></Image>
+        />
         <Text style={styles.title}>{product.name}</Text>
         <Text style={styles.price}>${product.price}</Text>
       </Pressable>
