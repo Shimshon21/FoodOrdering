@@ -19,7 +19,11 @@ const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
 const ProductDetailsScreen = () => {
   const { id } = useLocalSearchParams();
 
-  const { data: product, isLoading, error } = useProduct(Number(id));
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useProduct(Number(typeof id === "string" ? id : id[0]));
 
   const { addItem } = useCart();
 

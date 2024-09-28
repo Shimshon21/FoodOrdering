@@ -21,7 +21,6 @@ export default function MenuStack() {
                 />
               )}
             </Pressable>
-		
           </Link>
         ),
         // headerLeft: () => (
