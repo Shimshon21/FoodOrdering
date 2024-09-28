@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { Product } from "@/types";
+import { Tables } from "@/database.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 enum Status {
@@ -9,9 +9,13 @@ enum Status {
   SUCCESS = "SUCCESS",
 }
 
-enum databaseTables {
+export const enum databaseTables {
   PRODUCTS = "products",
 }
+
+type ProductListItemProps = {
+	product: Tables<databaseTables.PRODUCTS>;
+};
 
 export const useProductList = () => {
   return useQuery({
@@ -48,13 +52,14 @@ export const useInsertProduct = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: ProductListItemProps ) => {
+      const product = data.product
       const { data: newProduct, error } = await supabase
       .from(databaseTables.PRODUCTS)
       .insert({
-         name: data.name,
-         price: data.price,
-         image: data.image,
+         name: product.name,
+         price: product.price,
+         image: product.image,
       });
 
       if (error) {
@@ -63,7 +68,7 @@ export const useInsertProduct = () => {
       }
       return newProduct;
     },
-    async onSuccess(data) {
+    async onSuccess(data: ProductListItemProps) {
       // Refetch the products after inserting a new product
       queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
     }
@@ -74,15 +79,16 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: ProductListItemProps) => {
+      const product = data.product
       const { data: newProduct, error } = await supabase
       .from(databaseTables.PRODUCTS)
       .update({
-         name: data.name,
-         price: data.price,
-         image: data.image,
+         name: product.name,
+         price: product.price,
+         image: product.image,
       })
-      .eq("id", data.id);
+      .eq("id", product.id);
 
     if (error) {
       console.log(error);
@@ -91,10 +97,26 @@ export const useUpdateProduct = () => {
 
     return newProduct;
   }
-  , async onSuccess(_, id) {
+  , async onSuccess(_: any, id: number) {
     // Refetch the products after inserting a new product
     queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
     queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS, id] });
   }
 });
+};
+
+export const useDeleteProduct = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    async mutationFn(id: number) { 
+      await supabase
+      .from(databaseTables.PRODUCTS)
+      .delete()
+      .eq("id", id);
+    }, async onSuccess() {
+  // Refetch the products after inserting a new product
+  queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
+}
+  });
 };
