@@ -9,10 +9,6 @@ import { supabase } from "@/lib/supabase";
 const index = () => {
 	const { session, loading, isAdmin } = useAuth();
 
-	function signOut() {
-		supabase.auth.signOut();
-	}
-
 	console.log(session);
 
 	if (loading) {
@@ -29,6 +25,7 @@ const index = () => {
 		return <Redirect href={"/(user)"} />;
 	}
 
+	console.log("Redirect to admin");
 	return <Redirect href={"/(admin)"} />;
 };
 

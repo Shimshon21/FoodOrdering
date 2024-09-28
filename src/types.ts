@@ -7,12 +7,13 @@ export type Tables<T extends keyof Database['public']['Tables']> =
 export type Enums<T extends keyof Database['public']['Enums']> =
   Database['public']['Enums'][T];
 
-// export type Product = {
-//   id: number;
-//   image: string | null;
-//   name: string;
-//   price: number;
-// };
+export type Product = {
+  id: number;
+  image: string | null;
+  name: string;
+  price: number;
+};
+
 export type ProductListItemProps = {
 	product: Tables<"products">;
 };
@@ -25,7 +26,7 @@ export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
 
 export type CartItem = {
   id: string;
-  product: ProductListItemProps;
+  product: Product;
   product_id: number;
   size: PizzaSize;
   quantity: number;

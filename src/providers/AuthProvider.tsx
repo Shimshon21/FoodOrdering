@@ -9,7 +9,6 @@ import {
 	useState,
 } from "react";
 import { ActivityIndicator, Alert } from "react-native";
-import { ProfileItemProps } from "../types";
 
 // 2.Make type
 type AuthData = {
@@ -66,7 +65,6 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
 	console.log("Profile!!!!");
 	console.log(profile);
-	console.log(profile?.group);
 
 	return (
 		<AuthContext.Provider
