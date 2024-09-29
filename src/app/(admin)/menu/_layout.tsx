@@ -26,7 +26,6 @@ export default function MenuStack() {
 					<Pressable
 						onPress={() => {
 							supabase.auth.signOut();
-							router.replace("/");
 						}}
 					>
 						{({ pressed }) => (
