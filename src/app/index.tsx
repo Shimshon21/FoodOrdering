@@ -10,6 +10,7 @@ const index = () => {
 	const { session, loading, profile } = useAuth();
 
 	console.log(session);
+	console.log(profile);
 
 	if (loading) {
 		return <ActivityIndicator />;

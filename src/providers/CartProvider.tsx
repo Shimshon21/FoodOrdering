@@ -1,7 +1,9 @@
-import { CartItem, PizzaSize, Product } from "@/types";
+import { CartItem, PizzaSize, Tables } from "@/types";
 import products from "@assets/data/products";
 import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { randomUUID } from "expo-crypto";
+
+type Product = Tables<"products">;
 
 type CartType = {
 	items: CartItem[];
@@ -55,7 +57,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
 	console.log(items);
 
 	const total = items.reduce(
-		(sum, item) => (sum += item.product.price * item.quantity),
+		(sum, item) => (sum += (item.product?.price ?? 0) * item.quantity),
 		0
 	);
 	return (

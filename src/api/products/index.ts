@@ -9,8 +9,16 @@ enum Status {
   SUCCESS = "SUCCESS",
 }
 
+export type Product = {
+  id: number;
+  image: string | null;
+  name: string;
+  price: number;
+};
+
 export const enum databaseTables {
   PRODUCTS = "products",
+  ORDERS = "orders",
 }
 
 type ProductListItemProps = {
@@ -52,14 +60,14 @@ export const useInsertProduct = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (data: ProductListItemProps ) => {
+    mutationFn: async (data: any) => {
       const product = data.product
       const { data: newProduct, error } = await supabase
       .from(databaseTables.PRODUCTS)
       .insert({
-         name: product.name,
-         price: product.price,
-         image: product.image,
+         name: data.name,
+         price: data.price,
+         image: data.image,
       });
 
       if (error) {
@@ -68,7 +76,7 @@ export const useInsertProduct = () => {
       }
       return newProduct;
     },
-    async onSuccess(data: ProductListItemProps) {
+    async onSuccess(data) {
       // Refetch the products after inserting a new product
       queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
     }
@@ -79,7 +87,7 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: ProductListItemProps) => {
+    mutationFn: async (data: any) => {
       const product = data.product
       const { data: newProduct, error } = await supabase
       .from(databaseTables.PRODUCTS)

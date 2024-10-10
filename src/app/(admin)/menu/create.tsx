@@ -29,8 +29,8 @@ const CreateProductsScreen = () => {
 
 	useEffect(() => {
 		if (updatingProduct) {
-			setName(updatingProduct.name);
-			setPrice(updatingProduct.price.toString());
+			setName(updatingProduct?.name ?? "");
+			setPrice((updatingProduct?.price ?? 0).toString());
 			setImage(updatingProduct.image);
 		}
 	}, [updatingProduct]);
@@ -89,7 +89,6 @@ const CreateProductsScreen = () => {
 		}
 
 		console.warn("Update product", name, price, id);
-
 		updateProduct(
 			{ id, image, name, price: parseFloat(price) },
 			{
@@ -116,10 +115,19 @@ const CreateProductsScreen = () => {
 				},
 			}
 		);
+		insertProduct(
+			{ image, name, price: parseFloat(price) },
+			{
+				onSuccess: () => {
+					resetFields();
+					router.back();
+				},
+			}
+		);
 	};
 
 	const onDelete = () => {
-		deleteProduct(id, {
+		deleteProduct(parseInt(id), {
 			onSuccess: () => {
 				resetFields();
 				router.replace("/(admin)/menu");

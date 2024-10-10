@@ -8,51 +8,51 @@ import Button from "./Button";
 dayjs.extend(relativetime);
 
 type OrderListItemProps = {
-  order: Order;
+	order: Order;
 };
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
-  // Current date and time
-  const currentDate = dayjs();
+	// Current date and time
+	const currentDate = dayjs();
 
-  // Use the first segment to determine the route group (e.g., 'user' or 'admin')
-  const segments = useSegments();
+	const segments = useSegments();
+	print(order.status);
+	return (
+		<Link href={`/${segments[0]}/orders/${order.id}`} asChild={true}>
+			<Pressable style={styles.container}>
+				<View>
+					<Text>Order #{order.id}</Text>
+					<Text style={styles.time}>
+						{dayjs(order.created_at).fromNow()} hours ago
+					</Text>
+				</View>
 
-  <Link href={`/${segments[0]}/orders/${order.id}`} asChild>
-    <Pressable style={styles.container}>
-      <View>
-        <Text>Order #{order.id}</Text>
-        <Text style={styles.time}>
-          {" "}
-          {dayjs(order.created_at).fromNow()} hours ago
-        </Text>
-      </View>
-
-      <View style={styles.status}>
-        <Text>{order.status}</Text>
-      </View>
-    </Pressable>
-  </Link>;
+				<View style={styles.status}>
+					<Text>{order.status}</Text>
+				</View>
+			</Pressable>
+		</Link>
+	);
 };
 
 export default OrderListItem;
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    marginVertical: 5,
-    padding: 20,
-    borderRadius: 10,
-    justifyContent: "space-between",
-  },
+	container: {
+		flexDirection: "row",
+		alignItems: "center",
+		backgroundColor: "white",
+		marginVertical: 5,
+		padding: 20,
+		borderRadius: 10,
+		justifyContent: "space-between",
+	},
 
-  status: {
-    marginLeft: "auto",
-  },
+	status: {
+		marginLeft: "auto",
+	},
 
-  time: {
-    color: "grey",
-  },
+	time: {
+		color: "grey",
+	},
 });

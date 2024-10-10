@@ -39,6 +39,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 				error,
 			} = await supabase.auth.getSession();
 			setSession(session);
+			setLoading(false);
 
 			if (session) {
 				// fetch profile

@@ -8,10 +8,11 @@ export type Enums<T extends keyof Database['public']['Enums']> =
   Database['public']['Enums'][T];
 
 export type Product = {
+  created_at: string;
   id: number;
   image: string | null;
-  name: string;
-  price: number;
+  name: string | null;
+  price: number ;
 };
 
 export type ProductListItemProps = {
@@ -42,11 +43,12 @@ export const OrderStatusList: OrderStatus[] = [
 export type OrderStatus = 'New' | 'Cooking' | 'Delivering' | 'Delivered';
 
 export type Order = {
-  id: number;
   created_at: string;
+  id: number;
   total: number;
-  user_id: string;
   status: OrderStatus;
+  user_id: string;
+
 
   order_items?: OrderItem[];
 };
