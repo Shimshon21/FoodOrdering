@@ -4,9 +4,9 @@ import orders from "@assets/data/orders";
 import { ActivityIndicator, FlatList, Text } from "react-native";
 
 const OrdersList = () => {
-	const { data: orders, isLoading, error } = useAdminOrdersList();
+	const { data: orders, isLoading, error } = useAdminOrdersList(false);
 
-	console.log("Ordders!!!", orders);
+	console.log("Ordders active items !!!", orders);
 
 	if (isLoading) {
 		return <ActivityIndicator />;

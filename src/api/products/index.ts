@@ -19,6 +19,7 @@ export type Product = {
 export const enum databaseTables {
   PRODUCTS = "products",
   ORDERS = "orders",
+  ORDER_ITEMS = "order_items",
 }
 
 type ProductListItemProps = {

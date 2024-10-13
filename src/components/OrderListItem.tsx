@@ -4,11 +4,12 @@ import dayjs, { Dayjs } from "dayjs";
 import { Link, useSegments } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Button from "./Button";
+import { Tables } from "@/database.types";
 
 dayjs.extend(relativetime);
 
 type OrderListItemProps = {
-	order: Order;
+	order: Tables<"orders">;
 };
 
 const OrderListItem = ({ order }: OrderListItemProps) => {
