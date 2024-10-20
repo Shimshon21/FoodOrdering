@@ -18,6 +18,7 @@ const OrderListItem = ({ order }: OrderListItemProps) => {
 
 	const segments = useSegments();
 	print(order.status);
+	print(order.id);
 	return (
 		<Link href={`/${segments[0]}/orders/${order.id}`} asChild={true}>
 			<Pressable style={styles.container}>

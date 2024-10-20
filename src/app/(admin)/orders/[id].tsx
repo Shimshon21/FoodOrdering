@@ -1,4 +1,4 @@
-import { useOrderDetails } from "@/api/orders";
+import { useOrderDetails, useUpdateOrder } from "@/api/orders";
 import OrderItemListItem from "@/components/OrderItemListItem";
 import OrderListItem from "@/components/OrderListItem";
 import Colors from "@/constants/Colors";
@@ -14,13 +14,15 @@ import {
 } from "react-native";
 
 const OrderScreen = () => {
-	const { id } = useLocalSearchParams();
+	const { id: idString } = useLocalSearchParams();
+	const id = parseInt(typeof idString === "string" ? idString : idString[0]);
 
-	const {
-		data: order,
-		isLoading,
-		error,
-	} = useOrderDetails(parseInt(id as string));
+	const { data: order, isLoading, error } = useOrderDetails(id);
+	const { mutate: updateOrder } = useUpdateOrder();
+
+	const updateStatus = (status: string) => {
+		updateOrder({ id: id, updatedFields: { status } });
+	};
 
 	if (isLoading) {
 		return <ActivityIndicator />;
@@ -45,7 +47,7 @@ const OrderScreen = () => {
 							{OrderStatusList.map((status) => (
 								<Pressable
 									key={status}
-									onPress={() => console.warn("Update status")}
+									onPress={() => updateStatus(status)}
 									style={{
 										borderColor: Colors.light.tint,
 										borderWidth: 1,

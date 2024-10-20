@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { databaseTables } from "../products";
 import { useAuth } from "@/providers/AuthProvider";
 import { TablesInsert } from "@/database.types";
+import { UpdateTables } from "@/types";
 
 export const useAdminOrdersList = (archived = false) => {
   const statuses = archived ? ["Delivered"] : ["New", "Cooking", "Delivering"];
@@ -101,28 +102,30 @@ export const useUpdateOrder = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: Inser) => {
-      const product = data.product
+    async mutationFn(
+      {id,
+         updatedFields}: {
+          id: number;
+          updatedFields: UpdateTables<databaseTables.ORDERS>
+         }) {
       const { data: updateOrder, error } = await supabase
       .from(databaseTables.ORDERS)
-      .update({
-         name: product.name,
-         price: product.price,
-         image: product.image,
-      })
-      .eq("id", product.id);
+      .update(updatedFields)
+      .eq("id", id)
+      .select()
+      .single();
 
     if (error) {
       console.log(error);
       throw new Error(error.message);
     }
 
-    return newProduct;
+    return updateOrder;
   }
-  , async onSuccess(_: any, id: number) {
+  , async onSuccess(_: any, { id }) {
     // Refetch the products after inserting a new product
-    queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
-    queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS, id] });
+    queryClient.invalidateQueries({ queryKey: [databaseTables.ORDERS] });
+    queryClient.invalidateQueries({ queryKey: [databaseTables.ORDERS, id] });
   }
 });
 };
