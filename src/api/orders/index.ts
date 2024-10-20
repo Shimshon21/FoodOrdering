@@ -96,3 +96,33 @@ export const useInsertOrder = () => {
     }
   });
 };
+
+export const useUpdateOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: Inser) => {
+      const product = data.product
+      const { data: updateOrder, error } = await supabase
+      .from(databaseTables.ORDERS)
+      .update({
+         name: product.name,
+         price: product.price,
+         image: product.image,
+      })
+      .eq("id", product.id);
+
+    if (error) {
+      console.log(error);
+      throw new Error(error.message);
+    }
+
+    return newProduct;
+  }
+  , async onSuccess(_: any, id: number) {
+    // Refetch the products after inserting a new product
+    queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
+    queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS, id] });
+  }
+});
+};
