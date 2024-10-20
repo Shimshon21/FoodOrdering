@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { databaseTables } from "../products";
 import { useAuth } from "@/providers/AuthProvider";
-import { InsertTables } from "@/types";
+import { TablesInsert } from "@/database.types";
 
 export const useAdminOrdersList = (archived = false) => {
   const statuses = archived ? ["Delivered"] : ["New", "Cooking", "Delivering"];
@@ -13,7 +13,8 @@ export const useAdminOrdersList = (archived = false) => {
         const { data, error } = await supabase
         .from(databaseTables.ORDERS)
         .select("*")
-        .in("status", statuses);
+        .in("status", statuses)
+        .order('created_at', { ascending: false });
         if (error) {
           throw new Error(error.message);
         }
@@ -40,7 +41,8 @@ export const useAdminOrdersList = (archived = false) => {
         const { data, error } = await supabase
           .from(databaseTables.ORDERS)
           .select("*")
-          .eq("user_id", id);
+          .eq("user_id", id)
+          .order('created_at', { ascending: false });
         if (error) {
           throw new Error(error.message);
         }
@@ -56,7 +58,7 @@ export const useAdminOrdersList = (archived = false) => {
       queryFn: async () => {
         const { data, error } = await supabase
         .from(ordersTable)
-        .select("*")
+        .select("*, order_items(*, products(*))")
         .eq("id", id)
         .single();
                 
@@ -74,12 +76,12 @@ export const useInsertOrder = () => {
   const id = session?.user.id;
 
   return useMutation({
-    mutationFn: async (data: InsertTables<"orders">) => {
+    mutationFn: async (data: TablesInsert<"orders">) => {
       const { data: newProduct, error } = await supabase
       .from(databaseTables.ORDERS)
       .insert({...data, user_id: id})
       .select()
-      .single();
+      .single()
 
       if (error) {
         console.log(error);
@@ -89,6 +91,7 @@ export const useInsertOrder = () => {
     },
     async onSuccess(data) {
       // Refetch the products after inserting a new product
+      console.log("invalidate orders", data);
       queryClient.invalidateQueries({ queryKey: [databaseTables.ORDERS] });
     }
   });
