@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { Tables } from "@/database.types";
+import { Tables, TablesUpdate } from "@/database.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 enum Status {
@@ -88,30 +88,28 @@ export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: any) => {
-      const product = data.product
+    mutationFn: async (data: TablesUpdate<"products">) => {
       const { data: newProduct, error } = await supabase
       .from(databaseTables.PRODUCTS)
       .update({
-         name: product.name,
-         price: product.price,
-         image: product.image,
+         name: data.name,
+         price: data.price,
+         image: data.image,
       })
-      .eq("id", product.id);
+      .eq("id", data.id ?? 0);
 
-    if (error) {
-      console.log(error);
-      throw new Error(error.message);
+      if (error) {
+        console.log(error);
+        throw new Error(error.message);
+      }
+
+      return newProduct;
+    },    onSuccess: (_, variables) => {
+      // Refetch the products after updating a product
+      queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
+      queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS, variables.id] });
     }
-
-    return newProduct;
-  }
-  , async onSuccess(_: any, id: number) {
-    // Refetch the products after inserting a new product
-    queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
-    queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS, id] });
-  }
-});
+  });
 };
 
 export const useDeleteProduct = () => {
@@ -124,6 +122,7 @@ export const useDeleteProduct = () => {
       .delete()
       .eq("id", id);
     }, async onSuccess() {
+      console.log("Product deleted on api");
   // Refetch the products after inserting a new product
   queryClient.invalidateQueries({ queryKey: [databaseTables.PRODUCTS] });
 }

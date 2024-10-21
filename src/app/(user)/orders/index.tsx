@@ -2,7 +2,7 @@ import { useMyOrderList } from "@/api/orders";
 import OrderListItem from "@/components/OrderListItem";
 import { ActivityIndicator, FlatList, Text } from "react-native";
 
-const OrdersList = () => {
+const OrdersScreen = () => {
   const { data: orders, isLoading, error } = useMyOrderList();
 
   if (isLoading) {
@@ -25,4 +25,4 @@ const OrdersList = () => {
   );
 };
 
-export default OrdersList;
+export default OrdersScreen;

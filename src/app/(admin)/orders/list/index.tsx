@@ -1,27 +1,32 @@
 import { useAdminOrdersList } from "@/api/orders";
+import { useInsertOrderSubscription } from "@/api/orders/subscriptions";
 import OrderListItem from "@/components/OrderListItem";
-import orders from "@assets/data/orders";
+import { supabase } from "@/lib/supabase";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { ActivityIndicator, FlatList, Text } from "react-native";
 
-const OrdersList = () => {
-	const { data: orders, isLoading, error } = useAdminOrdersList(false);
+const OrdersScreen = () => {
+  const { data: orders, isLoading, error } = useAdminOrdersList(false);
 
-	console.log("Ordders active items !!!", orders);
+  const queryClient = useQueryClient();
 
-	if (isLoading) {
-		return <ActivityIndicator />;
-	}
+  useInsertOrderSubscription();
 
-	if (error) {
-		return <Text>Error: {error.message}</Text>;
-	}
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
 
-	return (
-		<FlatList
-			data={orders}
-			renderItem={({ item }) => <OrderListItem order={item} />}
-		/>
-	);
+  if (error) {
+    return <Text>Error: {error.message}</Text>;
+  }
+
+  return (
+    <FlatList
+      data={orders}
+      renderItem={({ item }) => <OrderListItem order={item} />}
+    />
+  );
 };
 
-export default OrdersList;
+export default OrdersScreen;

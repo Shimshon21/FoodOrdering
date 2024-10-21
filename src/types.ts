@@ -4,21 +4,14 @@ import { Database } from './database.types';
 export type Tables<T extends keyof Database['public']['Tables']> =
   Database['public']['Tables'][T]['Row'];
 
-export type InsertTables<T extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][T]['Insert'];
-  
-  export type UpdateTables<T extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][T]['Update'];  
-
 export type Enums<T extends keyof Database['public']['Enums']> =
   Database['public']['Enums'][T];
 
 export type Product = {
-  created_at: string;
   id: number;
   image: string | null;
   name: string | null;
-  price: number ;
+  price: number | null;
 };
 
 export type ProductListItemProps = {
@@ -49,11 +42,11 @@ export const OrderStatusList: OrderStatus[] = [
 export type OrderStatus = 'New' | 'Cooking' | 'Delivering' | 'Delivered';
 
 export type Order = {
-  created_at: string;
   id: number;
+  created_at: string;
   total: number;
-  status: OrderStatus;
   user_id: string;
+  status: OrderStatus;
 
   order_items?: OrderItem[];
 };

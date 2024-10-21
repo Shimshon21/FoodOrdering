@@ -49,9 +49,15 @@ const ProductDetailsScreen = () => {
     return <Text>Error loading product</Text>;
   }
 
+  if (!product) {
+    return <Text>Product not found</Text>;
+  }
+
   return (
     <View style={styles.container}>
-      <Stack.Screen options={{ title: product.name }} />
+      <Stack.Screen
+        options={{ title: product.name ?? "Missing product name" }}
+      />
       <Stack.Screen
         options={{
           title: "[Menu]",
@@ -75,13 +81,12 @@ const ProductDetailsScreen = () => {
         source={{ uri: product.image || defaultPizzaImage }}
         style={styles.image}
         resizeMode="contain"
-      ></Image>
+      />
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.price}>${product.price}</Text>
     </View>
   );
 };
-
 export default ProductDetailsScreen;
 
 const styles = StyleSheet.create({
