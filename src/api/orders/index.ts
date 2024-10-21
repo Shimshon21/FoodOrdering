@@ -2,8 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { databaseTables } from "../products";
 import { useAuth } from "@/providers/AuthProvider";
-import { TablesInsert } from "@/database.types";
-import { UpdateTables } from "@/types";
+import { TablesInsert, TablesUpdate } from "@/database.types";
 
 export const useAdminOrdersList = (archived = false) => {
   const statuses = archived ? ["Delivered"] : ["New", "Cooking", "Delivering"];
@@ -106,7 +105,7 @@ export const useUpdateOrder = () => {
       {id,
          updatedFields}: {
           id: number;
-          updatedFields: UpdateTables<databaseTables.ORDERS>
+          updatedFields: TablesUpdate<databaseTables.ORDERS>
          }) {
       const { data: updateOrder, error } = await supabase
       .from(databaseTables.ORDERS)
