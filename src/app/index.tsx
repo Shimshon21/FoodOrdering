@@ -12,7 +12,7 @@ const index = () => {
   console.log(session);
   console.log(profile);
 
-  if (loading || !profile) {
+  if (loading) {
     return <ActivityIndicator />;
   }
 

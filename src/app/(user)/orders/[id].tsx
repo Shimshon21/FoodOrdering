@@ -1,4 +1,5 @@
 import { useOrderDetails } from "@/api/orders";
+import { useUpdateOrderSubscription } from "@/api/orders/subscriptions";
 import OrderItemListItem from "@/components/OrderItemListItem";
 import OrderListItem from "@/components/OrderListItem";
 import { View } from "@/components/Themed";
@@ -7,13 +8,12 @@ import { Stack, useLocalSearchParams } from "expo-router";
 import { Text, FlatList, StyleSheet, ActivityIndicator } from "react-native";
 
 const OrderScreen = () => {
-  const { id } = useLocalSearchParams();
-  console.log("Load order by id ", id);
-  const {
-    data: order,
-    isLoading,
-    error,
-  } = useOrderDetails(parseInt(id as string));
+  const { id: idString } = useLocalSearchParams();
+  console.log("Load order by id ", idString);
+  const id = Number(typeof idString === "string" ? idString : idString[0]);
+
+  const { data: order, isLoading, error } = useOrderDetails(id);
+  useUpdateOrderSubscription(id);
 
   if (isLoading) {
     return <ActivityIndicator />;
