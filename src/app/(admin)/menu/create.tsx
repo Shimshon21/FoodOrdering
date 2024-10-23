@@ -73,6 +73,14 @@ const CreateProductsScreen = () => {
       .from("product-images")
       .upload(filePath, decode(base64), { contentType });
 
+    if (error) {
+      console.log(error);
+      Alert.alert("Error uploading image", error.message);
+      return;
+    }
+
+    console.log("uploaded image", data);
+
     if (data) {
       return data.path;
     }
@@ -131,14 +139,14 @@ const CreateProductsScreen = () => {
     );
   };
 
-  const onCreate = () => {
+  const onCreate = async () => {
     if (!validateInput()) {
       return;
     }
 
-    const imagePath = image ? uploadImage() : null;
+    const imagePath = await uploadImage();
 
-    console.warn("Creating product", name, price);
+    console.warn("Creating product", name, price, imagePath);
     insertProduct(
       { name, price: parseFloat(price), image: imagePath },
       {

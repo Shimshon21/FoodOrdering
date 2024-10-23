@@ -63,6 +63,8 @@ export const useInsertProduct = () => {
   return useMutation({
     mutationFn: async (data: any) => {
       const product = data.product
+
+      console.log("Inserting product", data);
       const { data: newProduct, error } = await supabase
       .from(databaseTables.PRODUCTS)
       .insert({
