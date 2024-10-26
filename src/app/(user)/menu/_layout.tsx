@@ -23,23 +23,6 @@ export default function MenuStack() {
 						</Pressable>
 					</Link>
 				),
-				headerLeft: () => (
-					<Pressable
-						onPress={() => {
-							supabase.auth.signOut();
-							router.replace("/sign-in");
-						}}
-					>
-						{({ pressed }) => (
-							<FontAwesome
-								name="sign-out"
-								size={25}
-								color={Colors.light.tint}
-								style={{ marginLeft: 15, opacity: pressed ? 0.5 : 1 }}
-							/>
-						)}
-					</Pressable>
-				),
 			}}
 		>
 			<Stack.Screen name="index" options={{ title: "Menu" }} />
