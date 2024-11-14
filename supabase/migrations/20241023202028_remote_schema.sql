@@ -44,7 +44,6 @@ create table "public"."profiles" (
     "group" "Group" not null default 'USER'::"Group"
 );
 
-
 alter table "public"."profiles" enable row level security;
 
 CREATE UNIQUE INDEX order_items_pkey ON public.order_items USING btree (id);
@@ -89,6 +88,7 @@ alter table "public"."profiles" validate constraint "username_length";
 
 set check_function_bodies = off;
 
+
 CREATE OR REPLACE FUNCTION public.handle_new_user()
  RETURNS trigger
  LANGUAGE plpgsql
@@ -102,6 +102,10 @@ begin
 end;
 $function$
 ;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();
 
 grant delete on table "public"."order_items" to "anon";
 
