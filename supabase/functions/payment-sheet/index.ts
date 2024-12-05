@@ -4,7 +4,7 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
-import { stripe } from "../payment-sheet/stripe.ts";
+import { stripe } from "../_utils/stripe.ts";
 console.log("Hello from Functions!")
 
 Deno.serve(async (req) => {

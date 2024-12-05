@@ -17,11 +17,6 @@ const CartListItem = ({ cartItem }: CartListItemProps) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: cartItem.product.image || defaultPizzaImage }}
-        style={styles.image}
-        resizeMode="contain"
-      />
       <RemoteImage
         path={cartItem.product.image || defaultPizzaImage}
         style={styles.image}
