@@ -1,7 +1,8 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { stripe } from './stripe';
+import { stripe } from '../_utils/stripe.ts';
 
 export const createOrRetrieveProfile = async (req: Request) => {
+  console.log("Created client")
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
@@ -11,12 +12,12 @@ export const createOrRetrieveProfile = async (req: Request) => {
         },
       }
     );
-    // Now we can get the session or user object
+    // // Now we can get the session or user object
     const {
       data: { user },
     } = await supabaseClient.auth.getUser();
 
-    console.log(user);
+    console.log("User", user);
 		if (!user) throw new Error('No user found');
 
         const { data: profile, error } = await supabaseClient
@@ -34,12 +35,21 @@ export const createOrRetrieveProfile = async (req: Request) => {
         }
 
         // Create a Stripe customer
-        const customer = await stripe.customer.create({
-            eamil: user.email,
-            metadeta: {
+        const customer = await stripe.customers.create({
+          email: user.email,
+            metadata: {
                 uid: user.id
             }
-        })
+});
+
 
         console.log("Customer data:", customer);
+
+        await supabaseClient
+        .from('profiles')
+        .update({ stripe_customer_id: customer.id})
+        .eq('id', profile.id)
+
+
+        return customer.id;
 };
