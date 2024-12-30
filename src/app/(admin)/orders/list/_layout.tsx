@@ -1,18 +1,35 @@
-import { Tabs, withLayoutContext } from "expo-router";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { SafeAreaView } from "react-native";
+import { View, Text } from "react-native";
+import OrdersScreen from ".";
 
-const TopTabs = withLayoutContext(createMaterialTopTabNavigator().Navigator);
+const Tab = createMaterialTopTabNavigator();
 
-export default function OrderListNavigator() {
-	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-			<TopTabs>
-				<TopTabs.Screen
-					name="index"
-					options={{ title: "Active" }}
-				></TopTabs.Screen>
-			</TopTabs>
-		</SafeAreaView>
-	);
-}
+// const OrdersScreen = () => (
+//   <View>
+//     <Text>Orders Screen</Text>
+//   </View>
+// );
+
+const CompletedOrdersScreen = () => (
+  <View>
+    <Text>Completed Orders Screen</Text>
+  </View>
+);
+
+const Layout = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="index"
+          component={OrdersScreen}
+          options={{ title: "Active" }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default Layout;

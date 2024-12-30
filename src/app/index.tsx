@@ -7,36 +7,45 @@ import { ActivityIndicator } from "react-native";
 import { supabase } from "@/lib/supabase";
 
 const index = () => {
-	const { session, loading, profile } = useAuth();
+  const { session, loading, profile, isAdmin } = useAuth();
 
-	console.log(session);
-	console.log(profile);
+  console.log(session);
+  console.log("Profile logged in", profile);
 
-	if (loading) {
-		return <ActivityIndicator />;
-	}
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
-	if (!session) {
-		console.log("Redirect to sign in from main page");
-		return <Redirect href={"/sign-in"} />;
-	}
+  if (!session) {
+    console.log("Redirect to sign in from main page");
+    return <Redirect href={"/sign-in"} />;
+  }
 
-	if (profile?.group === "ADMIN") {
-		return (
-			<View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
-				<Link href={"/(user)"} asChild>
-					<Button text="User" />
-				</Link>
-				<Link href={"/(admin)"} asChild>
-					<Button text="Admin" />
-				</Link>
-			</View>
-		);
-	}
+  if (!profile) {
+    console.log("Profile is undefined");
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Loading profile...</Text>
+      </View>
+    );
+  }
 
-	console.log("Redirect to user from main page", profile?.group);
+  if (isAdmin) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", padding: 10 }}>
+        <Link href={"/(user)"} asChild>
+          <Button text="User" />
+        </Link>
+        <Link href={"/(admin)"} asChild>
+          <Button text="Admin" />
+        </Link>
+      </View>
+    );
+  }
 
-	return <Redirect href="/(user)" />;
+  console.log("Redirect to user from main page", profile?.group);
+
+  return <Redirect href="/(user)" />;
 };
 
 export default index;
