@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
+    "newArchEnabled": true,
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -34,11 +35,20 @@
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "b3333faf-ff1c-46b7-bbbf-01e081e5ce13"
+      }
     }
   }
 }
