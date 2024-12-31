@@ -22,6 +22,10 @@ export type ProfileItemProps = {
   profile: Tables<"profiles">;
 }
 
+export type OrderProps = {
+  order: Tables<"orders">;
+}
+
 export type PizzaSize = 'S' | 'M' | 'L' | 'XL';
 
 export type CartItem = {

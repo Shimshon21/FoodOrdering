@@ -25,7 +25,7 @@ const SignInScreen = () => {
       console.log(error);
     }
 
-    console.log("No error");
+    console.log("No error in sign in");
     setLoading(false);
   }
 

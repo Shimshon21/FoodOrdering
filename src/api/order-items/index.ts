@@ -1,5 +1,4 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { useAuth } from '@/providers/AuthProvider';
 import { supabase } from '@/lib/supabase';
 import { databaseTables } from '../products';
 import { TablesInsert } from '@/database.types';

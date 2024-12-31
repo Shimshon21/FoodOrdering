@@ -4,30 +4,21 @@ import Button from "../components/Button";
 import { Link, Redirect } from "expo-router";
 import { useAuth } from "@/providers/AuthProvider";
 import { ActivityIndicator } from "react-native";
-import { supabase } from "@/lib/supabase";
 
 const index = () => {
   const { session, loading, profile, isAdmin } = useAuth();
 
-  console.log(session);
-  console.log("Profile logged in", profile);
-
   if (loading) {
-    return <ActivityIndicator />;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
   }
 
   if (!session) {
     console.log("Redirect to sign in from main page");
     return <Redirect href={"/sign-in"} />;
-  }
-
-  if (!profile) {
-    console.log("Profile is undefined");
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Loading profile...</Text>
-      </View>
-    );
   }
 
   if (isAdmin) {
@@ -42,8 +33,6 @@ const index = () => {
       </View>
     );
   }
-
-  console.log("Redirect to user from main page", profile?.group);
 
   return <Redirect href="/(user)" />;
 };

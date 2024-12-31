@@ -3,7 +3,7 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import { supabase } from './supabase';
-import { Order } from '@/types';
+import { OrderProps } from '@/types';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -74,21 +74,23 @@ export async function registerForPushNotificationsAsync() {
   return token;
 }
 
-export const getUserToken = async (userId) => {
+export const getUserToken = async (userId: string) => {
     const {data, error} = await supabase
     .from('profiles')
     .select('expo_push_token')
     .eq('id', userId)
     .single();
-    return data.expo_push_token;
+    return data?.expo_push_token;
 }
 
 // TODO: Implement better notification message
-export const notifiyUserAboutOrderUpdate = async (order: Tables<'orders'>, status: string) => {
-    const token = await getUserToken(order?.user_id);
+export const notifiyUserAboutOrderUpdate = async ({order}: OrderProps, status: string) => { 
+  const token = await getUserToken(order.user_id || "");
     console.log('Token:', token);
 
     if(token) {
-        await sendPushNotification(token, `Order status ${status}`, `Your order ${order.id} has been updated`);
+        await sendPushNotification({ data: token } as Notifications.ExpoPushToken, 
+          `Order status ${status}`,
+           `Your order ${order.id} has been updated`);
     }
-}
+  }

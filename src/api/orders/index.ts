@@ -99,32 +99,31 @@ export const useInsertOrder = () => {
 
 export const useUpdateOrder = () => {
   const queryClient = useQueryClient();
-
+  
   return useMutation({
-    async mutationFn(
-      {id,
-         updatedFields}: {
-          id: number;
-          updatedFields: TablesUpdate<databaseTables.ORDERS>
-         }) {
+    mutationFn: async (
+      { id, updatedFields }: { id: number; updatedFields: TablesUpdate<"orders"> }
+    ) => {
       const { data: updateOrder, error } = await supabase
-      .from(databaseTables.ORDERS)
-      .update(updatedFields)
-      .eq("id", id)
-      .select()
-      .single();
+        .from(databaseTables.ORDERS)
+        .update(updatedFields)
+        .eq("id", id)
+        .select()
+        .single();
 
-    if (error) {
-      console.log(error);
-      throw new Error(error.message);
-    }
+      if (error) {
+        console.log(error);
+        throw new Error(error.message);
+      }
 
-    return updateOrder;
-  }
-  , async onSuccess(_: any, { id }) {
-    // Refetch the products after inserting a new product
-    queryClient.invalidateQueries({ queryKey: [databaseTables.ORDERS] });
-    queryClient.invalidateQueries({ queryKey: [databaseTables.ORDERS, id] });
-  }
-});
+      return updateOrder;
+    },
+    onSuccess: async (_: any, { id }) => {
+      // Refetch the products after inserting a new product
+      await queryClient.invalidateQueries({ queryKey: [databaseTables.ORDERS] });
+      await queryClient.invalidateQueries({ queryKey: [databaseTables.ORDERS, id] });
+    },
+  });
 };
+
+
