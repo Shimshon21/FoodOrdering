@@ -22,8 +22,12 @@ const OrderScreen = () => {
   const { mutateAsync: updateOrder } = useUpdateOrder();
 
   const updateStatus = async (status: string) => {
+    console.log("Update status to ", status);
     await updateOrder({ id: id, updatedFields: { status } });
-    notifiyUserAboutOrderUpdate(order, status);
+    console.log("Order updated");
+    if (order) {
+      notifiyUserAboutOrderUpdate({ order });
+    }
   };
 
   if (isLoading) {
@@ -44,7 +48,7 @@ const OrderScreen = () => {
       <OrderListItem order={order} />
       <FlatList
         contentContainerStyle={{ gap: 10, paddingTop: 10 }}
-        data={order.order_items as unknown as OrderItem[]}
+        data={order.order_items}
         renderItem={({ item }) => <OrderItemListItem orderItem={item} />}
         ListFooterComponent={
           <>

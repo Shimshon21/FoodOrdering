@@ -29,6 +29,7 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
+    console.log("register for push notifications");
     registerForPushNotificationsAsync().then((token) => savePushToken(token));
 
     notificationListener.current =
@@ -48,10 +49,14 @@ const NotificationProvider = ({ children }: PropsWithChildren) => {
         Notifications.removeNotificationSubscription(
           notificationListener.current
         );
+      } else {
+        console.log("no notification listener");
       }
 
       if (responseListener.current) {
         Notifications.removeNotificationSubscription(responseListener.current);
+      } else {
+        console.log("no response listener");
       }
     };
   }, []);

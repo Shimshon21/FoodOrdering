@@ -15,7 +15,7 @@ Notifications.setNotificationHandler({
 
   // Can use this function below or use Expo's Push Notification Tool from: https://expo.dev/notifications
 async function sendPushNotification(
-    expoPushToken: Notifications.ExpoPushToken
+    expoPushToken: string
     , title: string
     , body: string
   ) {
@@ -27,6 +27,7 @@ async function sendPushNotification(
       data: { someData: 'goes here' },
     };
   
+    console.log('Sending push notification:', message);
     await fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: {
@@ -39,7 +40,7 @@ async function sendPushNotification(
   }
 
 export async function registerForPushNotificationsAsync() {
-  let token;
+  let token: string | undefined;
 
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('default', {
@@ -83,14 +84,33 @@ export const getUserToken = async (userId: string) => {
     return data?.expo_push_token;
 }
 
-// TODO: Implement better notification message
-export const notifiyUserAboutOrderUpdate = async ({order}: OrderProps, status: string) => { 
+export const notifiyUserAboutOrderUpdate = async ({order}: OrderProps) => { 
   const token = await getUserToken(order.user_id || "");
-    console.log('Token:', token);
+  console.log('Token:', token);
 
-    if(token) {
-        await sendPushNotification({ data: token } as Notifications.ExpoPushToken, 
-          `Order status ${status}`,
-           `Your order ${order.id} has been updated`);
-    }
+  if(token) {
+    const title = `Order ${order.status}`;
+    const body = getStatusMessage(order.status, order.id);
+
+    console.log('Title:', title);
+    console.log('Body:', body);
+    await sendPushNotification(token, title, body);
   }
+}
+
+const getStatusMessage = (status: string, orderId: number) => {
+  switch (status.toLowerCase()) {
+    case 'confirmed':
+      return `Your order with ID ${orderId} has been confirmed.`;
+    case 'preparing':
+      return `Your order with ID ${orderId} is being prepared.`;
+    case 'ready':
+      return `Your order with ID ${orderId} is ready for pickup.`;
+    case 'delivered':
+      return `Your order with ID ${orderId} has been delivered.`;
+    case 'cancelled':
+      return `Your order with ID ${orderId} has been cancelled.`;
+    default:
+      return `Your order with ID ${orderId} has been updated.`;
+  }
+};

@@ -6,18 +6,6 @@ import OrdersScreen from ".";
 
 const Tab = createMaterialTopTabNavigator();
 
-// const OrdersScreen = () => (
-//   <View>
-//     <Text>Orders Screen</Text>
-//   </View>
-// );
-
-const CompletedOrdersScreen = () => (
-  <View>
-    <Text>Completed Orders Screen</Text>
-  </View>
-);
-
 const Layout = () => {
   return (
     <NavigationContainer>

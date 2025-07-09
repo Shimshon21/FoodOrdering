@@ -19,7 +19,8 @@
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
         }
-      }
+      },
+      "bundleIdentifier": "com.anonymous.FoodOrdering"
     },
     "android": {
       "adaptiveIcon": {

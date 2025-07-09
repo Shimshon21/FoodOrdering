@@ -15,10 +15,11 @@ type OrderListItemProps = {
 const OrderListItem = ({ order }: OrderListItemProps) => {
   // Current date and time
   const currentDate = dayjs();
-
+  // Order date and time
+  console.log("Order date and time: ", order);
   const segments = useSegments();
   return (
-    <Link href={`/orders/${order.id}`} asChild={true}>
+    <Link href={`/${segments[0]}/orders/${order.id}`} asChild={true}>
       <Pressable style={styles.container}>
         <View>
           <Text>Order #{order.id}</Text>
